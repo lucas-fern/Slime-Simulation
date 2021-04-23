@@ -72,6 +72,52 @@ float sense(Agent agent, SpeciesSettings settings, float sensorAngleOffset) {
 	return sum;
 }
 
+uint gridWidth;
+uint gridHeight;
+
+bool InCell (float2 newPos, float2 cell)
+{
+	float cellWidth = width / gridWidth;
+	float cellHeight = height / gridHeight;
+
+	float cellLeft = cell.x * cellWidth;
+	float cellRight = cellLeft + cellWidth;
+	float cellTop = cell.y * cellHeight;
+	float cellBottom = cellTop + cellHeight;
+	
+	if (newPos.x > cellLeft && newPos.x < cellRight && newPos.y > cellTop && newPos.y < cellBottom)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool InBlocked (float2 newPos)
+{
+	int nBlocked = 60;
+	float2 blockedCells[60] = {float2(32, gridHeight - 15), float2(32, gridHeight - 16), float2(32, gridHeight - 17), float2(32, gridHeight - 18), float2(32, gridHeight - 19), float2(32, gridHeight - 20), 
+							   float2(32, gridHeight - 21), float2(32, gridHeight - 22), float2(32, gridHeight - 23), float2(32, gridHeight - 24), float2(32, gridHeight - 25), float2(32, gridHeight - 26), 
+							   float2(33, gridHeight - 15), float2(33, gridHeight - 16), float2(33, gridHeight - 17), float2(33, gridHeight - 18), float2(33, gridHeight - 19), float2(33, gridHeight - 20), 
+							   float2(33, gridHeight - 21), float2(33, gridHeight - 22), float2(33, gridHeight - 23), float2(33, gridHeight - 24), float2(33, gridHeight - 25), float2(33, gridHeight - 26),
+							   
+							   float2(34, gridHeight - 25), float2(35, gridHeight - 25), float2(36, gridHeight - 25), float2(37, gridHeight - 25), float2(38, gridHeight - 25), float2(39, gridHeight - 25), 
+							   float2(34, gridHeight - 26), float2(35, gridHeight - 26), float2(36, gridHeight - 26), float2(37, gridHeight - 26), float2(38, gridHeight - 26), float2(39, gridHeight - 26),
+							   
+							   float2(43, gridHeight - 15), float2(43, gridHeight - 16), float2(43, gridHeight - 17), float2(43, gridHeight - 18), float2(43, gridHeight - 19), float2(43, gridHeight - 20),
+							   float2(43, gridHeight - 21), float2(43, gridHeight - 22), float2(43, gridHeight - 23), float2(43, gridHeight - 24), float2(43, gridHeight - 25), float2(43, gridHeight - 26),
+							   float2(44, gridHeight - 15), float2(44, gridHeight - 16), float2(44, gridHeight - 17), float2(44, gridHeight - 18), float2(44, gridHeight - 19), float2(44, gridHeight - 20),
+							   float2(44, gridHeight - 21), float2(44, gridHeight - 22), float2(44, gridHeight - 23), float2(44, gridHeight - 24), float2(44, gridHeight - 25), float2(44, gridHeight - 26)};
+
+
+	for (int i = 0; i < nBlocked; i++) 
+	{
+		if (InCell(newPos, blockedCells[i])) {
+			return true;
+		}
+	}
+	return false;
+}
+
 [numthreads(16,1,1)]
 void Update (uint3 id : SV_DispatchThreadID)
 {
@@ -127,7 +173,16 @@ void Update (uint3 id : SV_DispatchThreadID)
 		newPos.y = min(height-1,max(0, newPos.y));
 		agents[id.x].angle = randomAngle;
 	}
-	else {
+	else if (InBlocked(newPos)) {
+		random = hash(random);
+		float randomAngle = scaleToRange01(random) * 2 * 3.1415;
+
+		newPos.x = pos.x;
+		newPos.y = pos.y;
+		agents[id.x].angle = 0.5 * randomAngle;
+	}
+	else 
+	{
 		float4 oldTrail = TrailMap[int2(newPos)];
 		TrailMap[int2(newPos)] = min(1, oldTrail + agent.speciesMask * trailWeight * deltaTime);
 	}
