@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2665318e53759e74db7a2d8238331945, type: 3}
   m_Name: C
   m_EditorClassIdentifier: 
-  stepsPerFrame: 5
+  stepsPerFrame: 3
   width: 3840
   height: 2160
-  numAgents: 1000000
+  numAgents: 250000
   spawnMode: 1
-  trailWeight: 2
-  decayRate: 1
+  trailWeight: 0.99
+  decayRate: 0.75
   diffuseRate: 5
   speciesSettings:
-  - moveSpeed: 30
+  - moveSpeed: 50
     turnSpeed: -3
     sensorAngleSpacing: 112
     sensorOffsetDst: 20

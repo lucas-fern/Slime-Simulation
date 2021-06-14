@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2665318e53759e74db7a2d8238331945, type: 3}
-  m_Name: A
+  m_Name: maze-solver
   m_EditorClassIdentifier: 
-  stepsPerFrame: 10
-  width: 1920
-  height: 1080
-  numAgents: 250000
-  spawnMode: 2
-  trailWeight: 5
-  decayRate: 0.2
-  diffuseRate: 3
+  stepsPerFrame: 2
+  width: 3840
+  height: 2160
+  numAgents: 1000000
+  spawnMode: 1
+  trailWeight: 1
+  decayRate: 0.92
+  diffuseRate: 3.71
   speciesSettings:
-  - moveSpeed: 20
-    turnSpeed: 2
-    sensorAngleSpacing: 30
-    sensorOffsetDst: 35
+  - moveSpeed: 50
+    turnSpeed: -1
+    sensorAngleSpacing: 112
+    sensorOffsetDst: 20
     sensorSize: 1
