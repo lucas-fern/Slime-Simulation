@@ -79,7 +79,7 @@ public class Simulation : MonoBehaviour
 
 			if (numSpecies == 1)
 			{
-				speciesMask = new Vector3Int(11, 3, 5); // Vector3Int.one;
+				speciesMask = new Vector3Int(0, 2, 1); // Vector3Int.one;
 			}
 			else
 			{
@@ -102,10 +102,10 @@ public class Simulation : MonoBehaviour
 		compute.SetInt("width", settings.width);
 		compute.SetInt("height", settings.height);
 
-		compute.SetInt("gridWidth", 80);
-		compute.SetInt("gridHeight", 50);
+		// compute.SetInt("gridWidth", 4);
+		// compute.SetInt("gridHeight", 3);
 
-		// compute.SetFloats("blockedCells", new float[8] {1, 2, 3, 4, 5, 6, 7, 8});
+		// compute.SetInts("blocked", new int[12] {1,1,1,1,1,1,1,1,1,1,1,1});
 	}
 
 	void FixedUpdate()
